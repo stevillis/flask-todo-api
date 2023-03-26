@@ -57,4 +57,5 @@
       79
     ]
   },
+  "python.analysis.typeCheckingMode": "basic",
 }

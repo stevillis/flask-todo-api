@@ -14,14 +14,16 @@ class TodoList(Resource):
     """Todo class based views."""
 
     def get(self):
-        """Sample of GET request."""
-        return "Hello, world!"
+        """Get Todos view."""
+        todos = todo_service.get_todos()
+        ts = todo_schema.TodoSchema(many=True)
+
+        return make_response(ts.jsonify(todos), 200)
 
     def post(self):
         """Create Todo view."""
         ts = todo_schema.TodoSchema()
         validate = ts.validate(request.json)
-        print(validate)
         if validate:
             return make_response(jsonify(validate), 400)
 

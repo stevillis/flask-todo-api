@@ -7,7 +7,7 @@ from api import ma
 from ..models import todo_model
 
 
-class TodoSchema(ma.ModelSchema):
+class TodoSchema(ma.SQLAlchemySchema):
     """Todo schema class."""
 
     class Meta:
@@ -15,6 +15,7 @@ class TodoSchema(ma.ModelSchema):
 
         model = todo_model.Todo
         fields = ("id", "title", "description", "expiration_date")
+        load_model = True
 
     title = ma_fields.String(required=True)
     description = ma_fields.String(required=True)

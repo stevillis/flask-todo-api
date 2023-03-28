@@ -11,7 +11,7 @@ from ..services import todo_service
 
 
 class TodoList(Resource):
-    """Todo class based views."""
+    """Todo class based views without parameter."""
 
     def get(self):
         """Get Todos view."""
@@ -42,4 +42,18 @@ class TodoList(Resource):
         return make_response(ts.jsonify(todo_db), 201)
 
 
+class TodoDetail(Resource):
+    """Todo class based views with parameter."""
+
+    def get(self, pk):
+        """Get todo by pk view."""
+        todo = todo_service.get_todo_by_pk(pk)
+        if todo:
+            ts = todo_schema.TodoSchema()
+            return make_response(ts.jsonify(todo), 200)
+
+        return make_response(jsonify("Todo not found!"), 404)
+
+
 api.add_resource(TodoList, "/todos")
+api.add_resource(TodoDetail, "/todos/<int:pk>")

@@ -21,3 +21,8 @@ def create_todo(todo: TodoEntity) -> TodoModel:
 def get_todos() -> List[TodoModel]:
     """Get todos service."""
     return TodoModel.query.all()
+
+
+def get_todo_by_pk(pk):
+    """Get todo by pk service."""
+    return TodoModel.query.filter_by(id=pk).first()

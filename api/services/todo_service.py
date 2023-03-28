@@ -26,3 +26,11 @@ def get_todos() -> List[TodoModel]:
 def get_todo_by_pk(pk):
     """Get todo by pk service."""
     return TodoModel.query.filter_by(id=pk).first()
+
+
+def update_todo(todo_db, new_todo):
+    """Update todo service."""
+    todo_db.title = new_todo.title
+    todo_db.description = new_todo.description
+    todo_db.expiration_date = new_todo.expiration_date
+    db.session.commit()

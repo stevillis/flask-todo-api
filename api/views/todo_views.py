@@ -10,6 +10,15 @@ from ..schemas import todo_schema
 from ..services import todo_service
 
 
+def get_todo_fields(request):
+    """Get todo fields from request."""
+    title = request.json["title"]
+    description = request.json["description"]
+    expiration_date = request.json["expiration_date"]
+
+    return title, description, expiration_date
+
+
 class TodoList(Resource):
     """Todo class based views without parameter."""
 
@@ -27,9 +36,7 @@ class TodoList(Resource):
         if validate:
             return make_response(jsonify(validate), 400)
 
-        title = request.json["title"]
-        description = request.json["description"]
-        expiration_date = request.json["expiration_date"]
+        title, description, expiration_date = get_todo_fields(request)
 
         new_todo = todo_entity.Todo(
             title=title,
@@ -48,11 +55,35 @@ class TodoDetail(Resource):
     def get(self, pk):
         """Get todo by pk view."""
         todo = todo_service.get_todo_by_pk(pk)
-        if todo:
-            ts = todo_schema.TodoSchema()
-            return make_response(ts.jsonify(todo), 200)
+        if not todo:
+            return make_response(jsonify("Todo not found!"), 404)
 
-        return make_response(jsonify("Todo not found!"), 404)
+        ts = todo_schema.TodoSchema()
+        return make_response(ts.jsonify(todo), 200)
+
+    def put(self, pk):
+        """Update todo view."""
+        todo_db = todo_service.get_todo_by_pk(pk)
+        if not todo_db:
+            return make_response(jsonify("Todo not found!"), 404)
+
+        ts = todo_schema.TodoSchema()
+        validate = ts.validate(request.json)
+        if validate:
+            return make_response(jsonify(validate), 400)
+
+        title, description, expiration_date = get_todo_fields(request)
+
+        new_todo = todo_entity.Todo(
+            title=title,
+            description=description,
+            expiration_date=expiration_date,
+        )
+
+        todo_service.update_todo(todo_db, new_todo)
+        updated_todo = todo_service.get_todo_by_pk(pk)
+
+        return make_response(ts.jsonify(updated_todo), 200)
 
 
 api.add_resource(TodoList, "/todos")

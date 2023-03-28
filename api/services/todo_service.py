@@ -34,3 +34,9 @@ def update_todo(todo_db, new_todo):
     todo_db.description = new_todo.description
     todo_db.expiration_date = new_todo.expiration_date
     db.session.commit()
+
+
+def delete_todo(todo):
+    """Delete todo service."""
+    db.session.delete(todo)
+    db.session.commit()

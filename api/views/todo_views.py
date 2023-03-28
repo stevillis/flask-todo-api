@@ -85,6 +85,15 @@ class TodoDetail(Resource):
 
         return make_response(ts.jsonify(updated_todo), 200)
 
+    def delete(self, pk):
+        """Delete todo view."""
+        todo = todo_service.get_todo_by_pk(pk)
+        if not todo:
+            return make_response(jsonify("Todo not found!"), 404)
+
+        todo_service.delete_todo(todo)
+        return make_response("", 204)
+
 
 api.add_resource(TodoList, "/todos")
 api.add_resource(TodoDetail, "/todos/<int:pk>")

@@ -10,11 +10,11 @@ from ..schemas import todo_schema
 from ..services import todo_service
 
 
-def get_todo_fields(request):
+def get_todo_fields(req):
     """Get todo fields from request."""
-    title = request.json["title"]
-    description = request.json["description"]
-    expiration_date = request.json["expiration_date"]
+    title = req.json["title"]
+    description = req.json["description"]
+    expiration_date = req.json["expiration_date"]
 
     return title, description, expiration_date
 

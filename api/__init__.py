@@ -16,5 +16,5 @@ migrate = Migrate(app, db)
 # API config
 api = Api(app)
 
-from .models import todo_model
-from .views import todo_views
+from .models import project_model, todo_model
+from .views import project_views, todo_views

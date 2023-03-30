@@ -16,5 +16,5 @@ class Todo(db.Model):
 
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"))
     project = db.relationship(
-        project_model.Project, backref=db.backref("todo", lazy="dynamic")
+        project_model.Project, backref=db.backref("todos", lazy="dynamic")
     )

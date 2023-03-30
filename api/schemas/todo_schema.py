@@ -14,9 +14,10 @@ class TodoSchema(ma.SQLAlchemySchema):
         """Todo schema meta definitions."""
 
         model = todo_model.Todo
-        fields = ("id", "title", "description", "expiration_date")
+        fields = ("id", "title", "description", "expiration_date", "project")
         load_model = True
 
     title = ma_fields.String(required=True)
     description = ma_fields.String(required=True)
     expiration_date = ma_fields.Date(required=True)
+    project = ma_fields.String(required=True)

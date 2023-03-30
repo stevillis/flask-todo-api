@@ -7,7 +7,7 @@ from api import api
 
 from ..entities import todo_entity
 from ..schemas import todo_schema
-from ..services import todo_service
+from ..services import project_service, todo_service
 
 
 def get_todo_fields(req):
@@ -38,10 +38,15 @@ class TodoList(Resource):
 
         title, description, expiration_date = get_todo_fields(request)
 
+        project = project_service.get_project_by_pk(request.json["project"])
+        if project is None:
+            return make_response(jsonify("Project not found!"), 404)
+
         new_todo = todo_entity.Todo(
             title=title,
             description=description,
             expiration_date=expiration_date,
+            project=project,
         )
 
         todo_db = todo_service.create_todo(new_todo)
@@ -74,10 +79,15 @@ class TodoDetail(Resource):
 
         title, description, expiration_date = get_todo_fields(request)
 
+        project = project_service.get_project_by_pk(request.json["project"])
+        if project is None:
+            return make_response(jsonify("Project not found!"), 404)
+
         new_todo = todo_entity.Todo(
             title=title,
             description=description,
             expiration_date=expiration_date,
+            project=project,
         )
 
         todo_service.update_todo(todo_db, new_todo)

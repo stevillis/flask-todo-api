@@ -14,6 +14,7 @@ def create_todo(todo: TodoEntity) -> TodoModel:
         title=todo.title,
         description=todo.description,
         expiration_date=todo.expiration_date,
+        project=todo.project,
     )
 
     db.session.add(todo_db)
@@ -37,6 +38,7 @@ def update_todo(todo_db, new_todo):
     todo_db.title = new_todo.title
     todo_db.description = new_todo.description
     todo_db.expiration_date = new_todo.expiration_date
+    todo_db.project = new_todo.project
     db.session.commit()
 
 

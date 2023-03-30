@@ -4,10 +4,11 @@
 class Todo:
     """Todo entity."""
 
-    def __init__(self, title, description, expiration_date) -> None:
+    def __init__(self, title, description, expiration_date, project) -> None:
         self.__title = title
         self.__description = description
         self.__expiration_date = expiration_date
+        self.__project = project
 
     @property
     def title(self):
@@ -38,3 +39,13 @@ class Todo:
     def expiration_date(self, expiration_date):
         """Expiration_date setter."""
         self.__expiration_date = expiration_date
+
+    @property
+    def project(self):
+        """Project getter."""
+        return self.__project
+
+    @project.setter
+    def project(self, project):
+        """Project setter."""
+        self.__project = project

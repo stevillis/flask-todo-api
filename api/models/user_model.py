@@ -17,3 +17,10 @@ class User(db.Model):
     def encrypt_password(self):
         """Encrypt password using sha256."""
         self.password = pbkdf2_sha256.hash(self.password)
+
+    def validate_password(self, password):
+        """
+        Encrypts `password` and check if it is equals to the user's encrypted
+        password.
+        """
+        return pbkdf2_sha256.verify(password, self.password)

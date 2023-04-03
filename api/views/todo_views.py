@@ -1,6 +1,7 @@
 """Todo views module."""
 
 from flask import jsonify, make_response, request
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from api import api
@@ -24,6 +25,7 @@ def get_todo_fields(req):
 class TodoList(Resource):
     """Todo class based views without parameter."""
 
+    @jwt_required()
     def get(self):
         """Get Todos view."""
         # todos = todo_service.get_todos()
@@ -32,6 +34,7 @@ class TodoList(Resource):
         # return make_response(ts.jsonify(todos), 200)
         return paginate(Todo, ts)
 
+    @jwt_required()
     def post(self):
         """Create Todo view."""
         ts = todo_schema.TodoSchema()
@@ -60,6 +63,7 @@ class TodoList(Resource):
 class TodoDetail(Resource):
     """Todo class based views with parameter."""
 
+    @jwt_required()
     def get(self, pk):
         """Get todo by pk view."""
         todo = todo_service.get_todo_by_pk(pk)
@@ -69,6 +73,7 @@ class TodoDetail(Resource):
         ts = todo_schema.TodoSchema()
         return make_response(ts.jsonify(todo), 200)
 
+    @jwt_required()
     def put(self, pk):
         """Update todo view."""
         todo_db = todo_service.get_todo_by_pk(pk)
@@ -98,6 +103,7 @@ class TodoDetail(Resource):
 
         return make_response(ts.jsonify(updated_todo), 200)
 
+    @jwt_required()
     def delete(self, pk):
         """Delete todo view."""
         todo = todo_service.get_todo_by_pk(pk)

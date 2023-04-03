@@ -19,5 +19,4 @@ def create_user(user: UserEntity) -> UserModel:
 
 def get_user_by_email(email: str):
     """Get user by email."""
-    print(email)
-    return UserModel.query.filter(email=email).first()
+    return UserModel.query.filter_by(email=email).first()

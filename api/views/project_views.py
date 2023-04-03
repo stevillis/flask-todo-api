@@ -1,6 +1,7 @@
 """Project views module."""
 
 from flask import jsonify, make_response, request
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from api import api
@@ -24,6 +25,7 @@ def get_project_fields(req):
 class ProjectList(Resource):
     """Project class based views without parameter."""
 
+    @jwt_required()
     def get(self):
         """Get Projects view."""
         # projects = project_service.get_projects()
@@ -32,6 +34,7 @@ class ProjectList(Resource):
         # return make_response(ps.jsonify(projects), 200)
         return paginate(Project, ps)
 
+    @jwt_required()
     def post(self):
         """Create Project view."""
         ps = project_schema.ProjectSchema()
@@ -54,6 +57,7 @@ class ProjectList(Resource):
 class ProjectDetail(Resource):
     """Project class based views with parameter."""
 
+    @jwt_required()
     def get(self, pk):
         """Get project by pk view."""
         project = project_service.get_project_by_pk(pk)
@@ -63,6 +67,7 @@ class ProjectDetail(Resource):
         ps = project_schema.ProjectSchema()
         return make_response(ps.jsonify(project), 200)
 
+    @jwt_required()
     def put(self, pk):
         """Update project view."""
         project_db = project_service.get_project_by_pk(pk)
@@ -85,6 +90,7 @@ class ProjectDetail(Resource):
 
         return make_response(ps.jsonify(updated_project), 200)
 
+    @jwt_required()
     def delete(self, pk):
         """Delete project view."""
         project = project_service.get_project_by_pk(pk)

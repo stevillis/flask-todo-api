@@ -1,6 +1,7 @@
 """Employee views module."""
 
 from flask import jsonify, make_response, request
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from api import api
@@ -23,6 +24,7 @@ def get_employee_fields(req):
 class EmployeeList(Resource):
     """Employee class based views without parameter."""
 
+    @jwt_required()
     def get(self):
         """Get Employees view."""
         # employees = employee_service.get_employees()
@@ -31,6 +33,7 @@ class EmployeeList(Resource):
         # return make_response(es.jsonify(employees), 200)
         return paginate(Employee, es)
 
+    @jwt_required()
     def post(self):
         """Create Employee view."""
         es = employee_schema.EmployeeSchema()
@@ -50,6 +53,7 @@ class EmployeeList(Resource):
 class EmployeeDetail(Resource):
     """Employee class based views with parameter."""
 
+    @jwt_required()
     def get(self, pk):
         """Get employee by pk view."""
         employee = employee_service.get_employee_by_pk(pk)
@@ -59,6 +63,7 @@ class EmployeeDetail(Resource):
         es = employee_schema.EmployeeSchema()
         return make_response(es.jsonify(employee), 200)
 
+    @jwt_required()
     def put(self, pk):
         """Update employee view."""
         employee_db = employee_service.get_employee_by_pk(pk)
@@ -79,6 +84,7 @@ class EmployeeDetail(Resource):
 
         return make_response(es.jsonify(updated_employee), 200)
 
+    @jwt_required()
     def delete(self, pk):
         """Delete employee view."""
         employee = employee_service.get_employee_by_pk(pk)

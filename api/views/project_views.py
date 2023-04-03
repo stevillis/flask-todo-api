@@ -14,8 +14,9 @@ def get_project_fields(req):
     """Get project fields from request."""
     name = req.json["name"]
     description = req.json["description"]
+    employees = req.json["employees"]
 
-    return name, description
+    return name, description, employees
 
 
 class ProjectList(Resource):
@@ -35,12 +36,15 @@ class ProjectList(Resource):
         if validate:
             return make_response(jsonify(validate), 400)
 
-        name, description = get_project_fields(request)
+        name, description, employees = get_project_fields(request)
 
-        new_project = project_entity.Project(name=name, description=description)
+        new_project = project_entity.Project(
+            name=name, description=description, employees=employees
+        )
 
         project_db = project_service.create_project(new_project)
 
+        project_db.employees = [employee.id for employee in project_db.employees]
         return make_response(ps.jsonify(project_db), 201)
 
 
@@ -67,9 +71,11 @@ class ProjectDetail(Resource):
         if validate:
             return make_response(jsonify(validate), 400)
 
-        name, description = get_project_fields(request)
+        name, description, employees = get_project_fields(request)
 
-        new_project = project_entity.Project(name=name, description=description)
+        new_project = project_entity.Project(
+            name=name, description=description, employees=employees
+        )
 
         project_service.update_project(project_db, new_project)
         updated_project = project_service.get_project_by_pk(pk)

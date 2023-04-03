@@ -20,10 +20,10 @@ class Employee:
 
     @property
     def birth_date(self):
-        """Birth date getter."""
+        """Birthdate getter."""
         return self.__birth_date
 
     @birth_date.setter
     def birth_date(self, birth_date):
-        """Birth date setter."""
+        """Birthdate setter."""
         self.__birth_date = birth_date

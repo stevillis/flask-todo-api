@@ -6,6 +6,8 @@ from flask_restful import Resource
 from api import api
 
 from ..entities import todo_entity
+from ..models.todo_model import Todo
+from ..pagination import paginate
 from ..schemas import todo_schema
 from ..services import project_service, todo_service
 
@@ -24,10 +26,11 @@ class TodoList(Resource):
 
     def get(self):
         """Get Todos view."""
-        todos = todo_service.get_todos()
+        # todos = todo_service.get_todos()
         ts = todo_schema.TodoSchema(many=True)
 
-        return make_response(ts.jsonify(todos), 200)
+        # return make_response(ts.jsonify(todos), 200)
+        return paginate(Todo, ts)
 
     def post(self):
         """Create Todo view."""

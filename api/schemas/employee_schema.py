@@ -14,7 +14,7 @@ class EmployeeSchema(ma.SQLAlchemySchema):
         """Employee schema meta definitions."""
 
         model = employee_model.Employee
-        fields = ("id", "name", "birth_date", "projects")
+        fields = ("id", "name", "birth_date")
         load_model = True
 
     name = ma_fields.String(required=True)

@@ -21,4 +21,6 @@ class ProjectSchema(ma.SQLAlchemySchema):
     name = ma_fields.String(required=True)
     description = ma_fields.String(required=True)
     todos = ma_fields.List(ma_fields.Nested(todo_schema.TodoSchema, only=["id"]))
-    # employees = ma_fields.List(ma_fields.Nested(employee_schema.EmployeeSchema, only=["id"]))
+    employees = ma_fields.List(
+        ma_fields.Nested(employee_schema.EmployeeSchema, only=["id"])
+    )

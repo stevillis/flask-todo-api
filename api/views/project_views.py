@@ -6,6 +6,8 @@ from flask_restful import Resource
 from api import api
 
 from ..entities import project_entity
+from ..models.project_model import Project
+from ..pagination import paginate
 from ..schemas import project_schema
 from ..services import project_service
 
@@ -24,10 +26,11 @@ class ProjectList(Resource):
 
     def get(self):
         """Get Projects view."""
-        projects = project_service.get_projects()
+        # projects = project_service.get_projects()
         ps = project_schema.ProjectSchema(many=True)
 
-        return make_response(ps.jsonify(projects), 200)
+        # return make_response(ps.jsonify(projects), 200)
+        return paginate(Project, ps)
 
     def post(self):
         """Create Project view."""

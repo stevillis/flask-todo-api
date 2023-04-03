@@ -6,6 +6,8 @@ from flask_restful import Resource
 from api import api
 
 from ..entities import employee_entity
+from ..models.employee_model import Employee
+from ..pagination import paginate
 from ..schemas import employee_schema
 from ..services import employee_service
 
@@ -23,10 +25,11 @@ class EmployeeList(Resource):
 
     def get(self):
         """Get Employees view."""
-        employees = employee_service.get_employees()
+        # employees = employee_service.get_employees()
         es = employee_schema.EmployeeSchema(many=True)
 
-        return make_response(es.jsonify(employees), 200)
+        # return make_response(es.jsonify(employees), 200)
+        return paginate(Employee, es)
 
     def post(self):
         """Create Employee view."""

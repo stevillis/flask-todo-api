@@ -15,7 +15,7 @@ class ProjectSchema(ma.SQLAlchemySchema):
         """Project schema meta definitions."""
 
         model = project_model.Project
-        fields = ("id", "name", "description", "todos", "employees")
+        fields = ("id", "name", "description", "todos", "employees", "_links")
         load_model = True
 
     name = ma_fields.String(required=True)
@@ -23,4 +23,12 @@ class ProjectSchema(ma.SQLAlchemySchema):
     todos = ma_fields.List(ma_fields.Nested(todo_schema.TodoSchema, only=["id"]))
     employees = ma_fields.List(
         ma_fields.Nested(employee_schema.EmployeeSchema, only=["id"])
+    )
+
+    _links = ma.Hyperlinks(
+        {
+            "get": ma.URLFor("projectdetail", values=dict(pk="<id>")),
+            "put": ma.URLFor("projectdetail", values=dict(pk="<id>")),
+            "delete": ma.URLFor("projectdetail", values=dict(pk="<id>")),
+        }
     )

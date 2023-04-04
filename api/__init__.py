@@ -1,3 +1,4 @@
+from flasgger import Swagger
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_marshmallow import Marshmallow
@@ -17,6 +18,8 @@ JWTManager(app)
 
 # API config
 api = Api(app)
+
+Swagger(app)
 
 from .models import employee_model, project_model, todo_model, user_model
 from .views import (

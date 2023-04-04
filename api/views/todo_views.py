@@ -27,7 +27,31 @@ class TodoList(Resource):
 
     @jwt_required()
     def get(self):
-        """Get Todos view."""
+        """
+        List all Todos.
+        ---
+        parameters:
+          - in: header
+            name: Authorization
+            type: string
+            required: true
+        responses:
+          200:
+            description: List of all Todos.
+            schema:
+              id: Todo
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                description:
+                  type: string
+                expiration_date:
+                  type: string
+                project:
+                  type: string
+        """
         # todos = todo_service.get_todos()
         ts = todo_schema.TodoSchema(many=True)
 
@@ -36,7 +60,48 @@ class TodoList(Resource):
 
     @jwt_required()
     def post(self):
-        """Create Todo view."""
+        """
+        Create Todo.
+        ---
+        parameters:
+          - in: body
+            name: Todo
+            description: Create a Todo.
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - expiration_date
+                - project
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                expiration_date:
+                  type: string
+                project:
+                  type: string
+        responses:
+          201:
+            description: Todo created successfully.
+            schema:
+              id: Todo
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                expiration_date:
+                  type: string
+                project:
+                  type: string
+          400:
+            description: Bad request. Loading Todos failed.
+          404:
+            description: Todo not found.
+        """
         ts = todo_schema.TodoSchema()
         validate = ts.validate(request.json)
         if validate:
@@ -65,7 +130,37 @@ class TodoDetail(Resource):
 
     @jwt_required()
     def get(self, pk):
-        """Get todo by pk view."""
+        """
+        Get a Todo by its pk.
+        ---
+        parameters:
+          - in: header
+            name: Authorization
+            type: string
+            required: true
+          - in: path
+            name: id
+            type: integer
+            required: true
+        responses:
+          200:
+            description: The Todo if found.
+            schema:
+              id: Todo
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                description:
+                  type: string
+                expiration_date:
+                  type: string
+                project:
+                  type: string
+          404:
+            description: Todo not found.
+        """
         todo = todo_service.get_todo_by_pk(pk)
         if not todo:
             return make_response(jsonify("Todo not found!"), 404)
@@ -75,7 +170,51 @@ class TodoDetail(Resource):
 
     @jwt_required()
     def put(self, pk):
-        """Update todo view."""
+        """
+        Update Todo.
+        ---
+        parameters:
+          - in: path
+            name: id
+            type: integer
+            required: true
+          - in: body
+            description: Update a Todo
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - expiration_date
+                - project
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                expiration_date:
+                  type: string
+                project:
+                  type: string
+        responses:
+          200:
+            description: Todo successfully updated.
+            schema:
+              id: Todo
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                expiration_date:
+                  type: string
+                project:
+                  type: string
+          400:
+            description: Bad request. Malformed data.
+          404:
+            description: Todo not found.
+        """
         todo_db = todo_service.get_todo_by_pk(pk)
         if not todo_db:
             return make_response(jsonify("Todo not found!"), 404)
@@ -105,7 +244,20 @@ class TodoDetail(Resource):
 
     @jwt_required()
     def delete(self, pk):
-        """Delete todo view."""
+        """
+        Delete a Todo.
+        ---
+        parameters:
+          - in: path
+            name: id
+            type: integer
+            required: true
+        responses:
+          204:
+            description: Todo successfully deleted.
+          404:
+            description: Todo not found.
+        """
         todo = todo_service.get_todo_by_pk(pk)
         if not todo:
             return make_response(jsonify("Todo not found!"), 404)
